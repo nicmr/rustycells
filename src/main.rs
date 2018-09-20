@@ -6,26 +6,43 @@ use rand::distributions::{Uniform};
 
 fn main() {
     
-    // let mut grid = random_grid(10);
-    let mut grid = vec![0,0,0,0,1,0,0,0,0]; //Sierpiński triangle
-    let generations = 10;
-    println!["{:?}", grid];
-
-
-    for gen in 0..generations {
-        grid = next_gen(grid);
+    println!("{}", "Sierpiński triangle");
+    {
+        let mut grid = vec![0,0,0,0,1,0,0,0,0]; //Sierpiński triangle
+        let generations = 10;
         println!["{:?}", grid];
+
+
+        for _ in 0..generations {
+            grid = next_gen(grid);
+            println!["{:?}", grid];
+        }
     }
+
+
+    println!("{}", "random grid");
+    {
+        let mut grid = random_grid(9);
+        let generations = 10;
+        println!("{:?}", grid);
+        for _ in 0..generations {
+           grid = next_gen(grid);
+            println!["{:?}", grid];
+        }
+    }
+    
+
+
 }
 
 
 
 //currently one-dimensional
 //consider using ndarray
-fn random_grid(len: u32) -> Vec<u8>{
+fn random_grid(len: usize) -> Vec<u8>{
 
     let roll_range = Uniform::new_inclusive(0,1);
-    thread_rng().sample_iter(&roll_range).take(10).collect()
+    thread_rng().sample_iter(&roll_range).take(len).collect()
 }
 
 fn next_gen(old: Vec<u8>)->Vec<u8>{
@@ -53,8 +70,6 @@ fn procreate(a: u8, b: u8, c: u8)->Genome{
 struct Genome{
     code: u8,
 }
-
-
 
 impl Genome{
     fn translate(&self)->u8{
